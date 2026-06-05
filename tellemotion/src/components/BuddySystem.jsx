@@ -21,7 +21,7 @@ const BuddySystem = () => {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto mt-8 bg-indigo-50 rounded-[2rem] p-6 shadow-md border-2 border-indigo-100 flex flex-col relative overflow-hidden transition-all duration-300 hover:shadow-lg">
+    <div className="w-full max-w-sm mx-auto mt-8 bg-indigo-50 rounded-2xl p-6 shadow-md border-2 border-indigo-100 flex flex-col relative overflow-hidden transition-all duration-300 hover:shadow-lg">
       
       {/* 상단 짝꿍 정보 */}
       <div className="flex items-center justify-between mb-6">

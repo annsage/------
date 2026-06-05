@@ -47,7 +47,7 @@ const CharacterDisplay = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 bg-white rounded-3xl shadow-xl w-full max-w-md mx-auto border-4 border-gray-100 transition-all duration-300 hover:shadow-2xl">
+    <div className="flex flex-col items-center justify-center p-8 bg-white rounded-2xl shadow-xl w-full max-w-md mx-auto border-4 border-gray-100 transition-all duration-300 hover:shadow-2xl">
       
       {/* 캐릭터 표시 영역 */}
       <div className="h-40 flex items-center justify-center mb-8">

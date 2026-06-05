@@ -38,7 +38,7 @@ const VisualTimer = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-md">
-      <div className="bg-white p-12 rounded-[3rem] shadow-2xl flex flex-col items-center animate-in zoom-in duration-300">
+      <div className="bg-white p-12 rounded-2xl shadow-2xl flex flex-col items-center animate-in zoom-in duration-300">
         <h2 className="text-3xl font-black text-gray-800 mb-8 tracking-tight">
           편안하게 쉬는 시간
         </h2>

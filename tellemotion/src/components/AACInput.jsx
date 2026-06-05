@@ -26,7 +26,7 @@ const AACInput = () => {
             onClick={() => inputAAC(btn.type, btn.weight)}
             disabled={isSafeZoneActive} // 휴식 중에는 버튼 비활성화 (기획에 따라 변경 가능)
             className={`
-              group flex flex-col items-center justify-center p-6 rounded-3xl border-4 
+              group flex flex-col items-center justify-center p-6 rounded-2xl border-4 
               transition-all duration-200 transform active:scale-95
               focus:outline-none focus:ring-4 focus:border-transparent
               ${btn.bgColor}
