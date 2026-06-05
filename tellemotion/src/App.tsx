@@ -1,122 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React from 'react';
+import useEnergyStore from './store/useEnergyStore';
+import CharacterDisplay from './components/CharacterDisplay';
+import AACInput from './components/AACInput';
+import BuddySystem from './components/BuddySystem';
+import VisualTimer from './components/VisualTimer';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { toggleSafeZone, isSafeZoneActive } = useEnergyStore();
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10 px-4">
+      <h1 className="text-4xl font-black text-indigo-900 mb-8 tracking-tighter drop-shadow-sm">
+        에너지 고치 🔋
+      </h1>
+      
+      <div className="flex w-full max-w-6xl gap-8 flex-col lg:flex-row items-start justify-center">
+        {/* 왼쪽: 캐릭터 및 짝꿍 정보 */}
+        <div className="flex flex-col gap-6 w-full lg:w-1/3">
+          <CharacterDisplay />
+          <BuddySystem />
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+        {/* 오른쪽: AAC 입력 및 컨트롤 */}
+        <div className="flex flex-col w-full lg:w-2/3 max-w-xl mx-auto gap-8">
+          <AACInput />
+          
+          <div className="bg-white p-6 rounded-3xl shadow-md border-4 border-gray-100 flex flex-col items-center">
+            <h2 className="text-xl font-bold text-gray-700 mb-4">자기조절 도구</h2>
+            <button
+              onClick={() => toggleSafeZone(true, 60)}
+              disabled={isSafeZoneActive}
+              className={`w-full py-4 rounded-2xl font-bold text-lg shadow-sm transition-all transform active:scale-95 flex justify-center items-center gap-2 ${
+                isSafeZoneActive 
+                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
+                  : 'bg-teal-500 hover:bg-teal-400 text-white'
+              }`}
+            >
+              <span className="text-2xl">🌿</span> 편안하게 쉬는 시간 (60초)
+            </button>
+          </div>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </div>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* 시각적 타이머 모달 (안전지대 활성화 시 등장) */}
+      <VisualTimer />
+    </div>
+  );
 }
 
-export default App
+export default App;
