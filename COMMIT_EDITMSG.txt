@@ -1,0 +1,29 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch main
+#
+# Initial commit
+#
+# Changes to be committed:
+#	new file:   tellemotion/.gitignore
+#	new file:   tellemotion/README.md
+#	new file:   tellemotion/eslint.config.js
+#	new file:   tellemotion/index.html
+#	new file:   tellemotion/package-lock.json
+#	new file:   tellemotion/package.json
+#	new file:   tellemotion/public/favicon.svg
+#	new file:   tellemotion/public/icons.svg
+#	new file:   tellemotion/src/App.css
+#	new file:   tellemotion/src/App.tsx
+#	new file:   tellemotion/src/assets/hero.png
+#	new file:   tellemotion/src/assets/react.svg
+#	new file:   tellemotion/src/assets/vite.svg
+#	new file:   tellemotion/src/index.css
+#	new file:   tellemotion/src/main.tsx
+#	new file:   tellemotion/tsconfig.app.json
+#	new file:   tellemotion/tsconfig.json
+#	new file:   tellemotion/tsconfig.node.json
+#	new file:   tellemotion/vite.config.ts
+#
