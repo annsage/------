@@ -11,9 +11,15 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const storage = getStorage(app);
+let app, db, storage;
+
+try {
+  // Initialize Firebase
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  storage = getStorage(app);
+} catch (error) {
+  console.error("Firebase 초기화 에러 (환경변수를 확인하세요):", error);
+}
 
 export { app, db, storage };
