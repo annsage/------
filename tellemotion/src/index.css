@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
+@theme {
+  --color-melon-base: #E4F7E4;
+  --color-melon-point: #A2E3A2;
+}
+
 body {
   margin: 0;
-  background-color: #f9fafb;
+  background-color: var(--color-melon-base);
+  font-family: ui-rounded, 'Hiragino Maru Gothic ProN', 'NanumSRound', 'Comfortaa', sans-serif;
 }

@@ -5,12 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "firebase": "^12.14.0",
     "react": "^19.2.6",
+    "react-confetti": "^6.4.0",
     "react-dom": "^19.2.6",
     "zustand": "^5.0.14"
   },

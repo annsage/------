@@ -1,57 +1,104 @@
-import React from 'react';
-import useEnergyStore from './store/useEnergyStore';
-import CharacterDisplay from './components/CharacterDisplay';
-import AACInput from './components/AACInput';
-import BuddySystem from './components/BuddySystem';
-import VisualTimer from './components/VisualTimer';
-import ScheduleList from './components/ScheduleList';
-import MessageHelper from './components/MessageHelper';
+import React, { Component } from 'react';
+import useAppStore from './store/useAppStore';
+import EntryScreen from './components/EntryScreen';
+import StudentDashboard from './components/StudentDashboard';
+import HelperDashboard from './components/HelperDashboard';
 
-function App() {
-  const { toggleSafeZone, isSafeZoneActive } = useEnergyStore();
+// 백엔드 연동 가이드 (Python 예시 - f-string 사용 금지)
+// 파이썬 기반 서버 구동 시 예외 처리는 아래와 같이 작성합니다.
+// try:
+//     init_firebase()
+// except Exception as e:
+//     print("Firebase 연결 오류 발생: {}".format(e))
 
-  return (
-    <div className="min-h-screen bg-indigo-50/50 flex flex-col items-center py-10 px-4 sm:px-8">
-      <h1 className="text-4xl font-black text-indigo-900 mb-8 tracking-tighter drop-shadow-sm">
-        에너지 고치 🔋
-      </h1>
-      
-      <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        {/* 왼쪽: 캐릭터, 짝꿍, 일정 */}
-        <div className="md:col-span-5 lg:col-span-4 flex flex-col gap-6 w-full">
-          <CharacterDisplay />
-          <BuddySystem />
-          <ScheduleList />
-        </div>
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, errorMessage: '' };
+  }
 
-        {/* 오른쪽: AAC, 소통 도우미, 쉬는 시간 */}
-        <div className="md:col-span-7 lg:col-span-8 flex flex-col gap-6 w-full">
-          <AACInput />
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-            <MessageHelper />
-            
-            <div className="bg-white p-6 rounded-2xl shadow-md border-4 border-white-100 flex flex-col items-center justify-center">
-              <h2 className="text-xl font-bold text-gray-700 mb-4">자기조절 도구</h2>
-              <button
-                onClick={() => toggleSafeZone(true, 60)}
-                disabled={isSafeZoneActive}
-                className={`w-full py-4 rounded-2xl font-bold text-lg shadow-sm transition-all transform active:scale-95 flex justify-center items-center gap-2 ${
-                  isSafeZoneActive 
-                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
-                    : 'bg-teal-500 hover:bg-teal-400 text-white'
-                }`}
-              >
-                <span className="text-2xl">🌿</span> 쉬는 시간 (60초)
-              </button>
-            </div>
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("앱 실행 중 에러 발생:", error, errorInfo);
+    this.setState({ errorMessage: error.message });
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-red-50 flex flex-col items-center justify-center p-8 text-center">
+          <div className="bg-white p-10 rounded-3xl shadow-xl border-4 border-red-200 max-w-lg">
+            <h1 className="text-4xl mb-4">🚨</h1>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">앗, 뭔가 문제가 생겼어요!</h2>
+            <p className="text-gray-600 font-medium mb-6">
+              네트워크 연결이 끊어졌거나 서버에 일시적인 오류가 있을 수 있어요.
+              잠시 후 다시 시도해 주세요.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-2xl w-full transition-all"
+            >
+              새로고침
+            </button>
           </div>
         </div>
-      </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
-      {/* 시각적 타이머 모달 (안전지대 활성화 시 등장) */}
-      <VisualTimer />
+function AppContent() {
+  const currentScreen = useAppStore((state) => state.currentScreen);
+
+  let Content;
+  switch (currentScreen) {
+    case 'STUDENT_DASHBOARD':
+      Content = <StudentDashboard />;
+      break;
+    case 'HELPER_DASHBOARD':
+      Content = <HelperDashboard />;
+      break;
+    case 'ENTRY':
+    default:
+      Content = <EntryScreen />;
+      break;
+  }
+
+  return (
+    <div className="min-h-screen bg-[var(--color-melon-base)] p-4 md:p-8 lg:p-12 flex flex-col items-center">
+      {/* 상단 헤더 (Entry 스크린이 아닐 때만 표시) */}
+      {currentScreen !== 'ENTRY' && (
+        <header className="w-full max-w-7xl mb-8 flex items-center justify-between bg-white p-6 rounded-3xl shadow-sm border-4 border-white-100">
+          <h1 className="text-3xl font-black text-gray-800 tracking-tight">
+            우리반 소통 고치 🌿
+          </h1>
+          <button 
+            onClick={() => window.location.reload()}
+            className="text-gray-500 hover:text-gray-800 font-bold px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors"
+          >
+            처음으로
+          </button>
+        </header>
+      )}
+
+      {/* 메인 콘텐츠 영역 (유연한 그리드/플렉스 레이아웃) */}
+      <main className={`w-full ${currentScreen === 'ENTRY' ? 'max-w-full' : 'max-w-7xl'} flex-1 flex flex-col justify-center`}>
+        {Content}
+      </main>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <AppContent />
+    </ErrorBoundary>
   );
 }
 

@@ -7,16 +7,5 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-  ],
-  build: {
-    target: 'esnext',
-    minify: 'esbuild',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'zustand']
-        }
-      }
-    }
-  }
+  ]
 })
