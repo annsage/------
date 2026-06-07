@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "cd tellemotion && npm run dev",
+    "build": "cd tellemotion && npm install && npm run build && cd .. && cp -r tellemotion/dist dist",
+    "preview": "cd tellemotion && npm run preview"
   },
   "devDependencies": {
     "typescript": "~6.0.2",
