@@ -28,10 +28,10 @@ function EntryScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0FDF4] flex flex-col items-center justify-center p-4">
-      <div className="bg-white p-10 md:p-16 rounded-3xl shadow-lg flex flex-col items-center max-w-2xl w-full border-4 border-[var(--color-melon-point)] animate-in fade-in duration-500">
+    <div className="min-h-screen bg-[var(--color-melon-base)] flex flex-col items-center justify-center p-4">
+      <div className="bg-white p-10 md:p-16 rounded-3xl shadow-soft flex flex-col items-center max-w-2xl w-full border-4 border-[var(--color-melon-point)] animate-in fade-in duration-500">
         <h1 className="text-4xl md:text-5xl font-black text-gray-800 mb-8 text-center break-keep">
-          우리반 소통 고치 🌿
+          말하지 않아도 통하는 마법, 텔레모션 🌿
         </h1>
 
         <div className="w-full mb-10">
@@ -48,7 +48,7 @@ function EntryScreen() {
           <button
             onClick={() => handleRoleSelect('STUDENT')}
             disabled={!name.trim()}
-            className="flex-1 bg-[var(--color-melon-base)] hover:bg-[var(--color-melon-point)] text-gray-800 font-black text-2xl py-8 rounded-3xl border-4 border-[var(--color-melon-point)] transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm flex flex-col items-center justify-center gap-2"
+            className="flex-1 bg-[var(--color-melon-base)] hover:bg-[var(--color-melon-point)] text-gray-800 font-black text-2xl py-8 rounded-3xl border-4 border-[var(--color-melon-point)] transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-soft flex flex-col items-center justify-center gap-2"
           >
             <span className="text-4xl">🎨</span>
             <span>나는 학생이에요</span>
@@ -57,7 +57,7 @@ function EntryScreen() {
           <button
             onClick={() => handleRoleSelect('HELPER')}
             disabled={!name.trim()}
-            className="flex-1 bg-orange-50 hover:bg-orange-100 text-gray-800 font-black text-2xl py-8 rounded-3xl border-4 border-orange-200 transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm flex flex-col items-center justify-center gap-2"
+            className="flex-1 bg-orange-50 hover:bg-orange-100 text-gray-800 font-black text-2xl py-8 rounded-3xl border-4 border-orange-200 transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-soft flex flex-col items-center justify-center gap-2"
           >
             <span className="text-4xl">🤝</span>
             <span>나는 도우미 친구예요</span>

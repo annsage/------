@@ -55,7 +55,7 @@ function HelperDashboard() {
   const needsMission = studentStatus && ['불안', '화남'].includes(studentStatus.emotion);
 
   return (
-    <div className="w-full min-h-screen bg-green-50 p-4 md:p-8 flex flex-col lg:flex-row gap-8 font-sans">
+    <div className="w-full min-h-screen bg-[var(--color-melon-base)] p-4 md:p-8 flex flex-col lg:flex-row gap-8 font-sans">
       {showConfetti && (
         <Confetti
           width={windowDimension.width}
@@ -68,7 +68,7 @@ function HelperDashboard() {
 
       {/* 좌측: 실시간 학생 상태 모니터링 */}
       <div className="w-full lg:w-1/2 flex flex-col gap-6">
-        <div className="bg-white p-8 rounded-3xl shadow-sm border-4 border-[#A2E3A2] flex-1 flex flex-col">
+        <div className="bg-white p-8 rounded-3xl shadow-soft border-4 border-[#A2E3A2] flex-1 flex flex-col">
           <h2 className="text-3xl font-black text-gray-800 mb-6 flex items-center gap-3 break-keep">
             <span className="text-4xl">👀</span> 
             <span>지금 우리 반 친구는?</span>
@@ -80,7 +80,7 @@ function HelperDashboard() {
                 <p className="text-2xl font-bold text-gray-600 mb-4 text-center break-keep">
                   <span className="text-green-600 font-black text-3xl">{studentStatus.name}</span> 친구의 기분
                 </p>
-                <div className="text-5xl font-black text-gray-800 bg-white px-8 py-6 rounded-2xl shadow-sm text-center border-4 border-gray-200">
+                <div className="text-5xl font-black text-gray-800 bg-white px-8 py-6 rounded-2xl shadow-soft text-center border-4 border-gray-200">
                   {studentStatus.emotion}
                 </div>
               </div>
@@ -107,7 +107,7 @@ function HelperDashboard() {
 
       {/* 우측: 오늘의 비밀 미션 게시판 */}
       <div className="w-full lg:w-1/2 flex flex-col gap-6">
-        <div className="bg-white p-8 rounded-3xl shadow-sm border-4 border-yellow-300 flex flex-col min-h-[600px]">
+        <div className="bg-white p-8 rounded-3xl shadow-soft border-4 border-yellow-300 flex flex-col min-h-[600px]">
           <h2 className="text-3xl font-black text-gray-800 mb-6 flex items-center gap-3 break-keep border-b-4 border-gray-100 pb-4">
             <span className="text-4xl">💌</span> 
             <span>오늘의 비밀 미션 게시판</span>
@@ -116,8 +116,8 @@ function HelperDashboard() {
           <div className="flex-1 flex flex-col items-center justify-center p-4">
             {needsMission ? (
               <div className="w-full flex flex-col items-center animate-in slide-in-from-bottom-10 fade-in duration-700">
-                <div className="bg-yellow-50 border-4 border-yellow-400 rounded-3xl p-8 mb-8 w-full shadow-md relative">
-                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-yellow-400 text-yellow-900 font-black px-6 py-2 rounded-full text-xl shadow-sm">
+                <div className="bg-yellow-50 border-4 border-yellow-400 rounded-3xl p-8 mb-8 w-full shadow-soft relative">
+                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-yellow-400 text-yellow-900 font-black px-6 py-2 rounded-full text-xl shadow-soft">
                     TOP SECRET
                   </div>
                   <h3 className="text-2xl font-bold text-gray-700 mb-4 mt-4 text-center">
@@ -131,7 +131,7 @@ function HelperDashboard() {
                 {!missionComplete ? (
                   <button
                     onClick={handleMissionComplete}
-                    className="bg-green-500 hover:bg-green-600 text-white font-black text-4xl py-6 px-12 rounded-full shadow-lg transition-transform active:scale-95 border-4 border-green-700"
+                    className="bg-green-500 hover:bg-green-600 text-white font-black text-4xl py-6 px-12 rounded-full shadow-soft transition-transform active:scale-95 border-4 border-green-700 cursor-pointer"
                   >
                     미션 완료! 🌟
                   </button>

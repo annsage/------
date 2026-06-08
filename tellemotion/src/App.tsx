@@ -73,9 +73,9 @@ function AppContent() {
     <div className="min-h-screen bg-[var(--color-melon-base)] p-4 md:p-8 lg:p-12 flex flex-col items-center">
       {/* 상단 헤더 (Entry 스크린이 아닐 때만 표시) */}
       {currentScreen !== 'ENTRY' && (
-        <header className="w-full max-w-7xl mb-8 flex items-center justify-between bg-white p-6 rounded-3xl shadow-sm border-4 border-white-100">
+        <header className="w-full max-w-7xl mb-8 flex items-center justify-between bg-white p-6 rounded-3xl shadow-soft border-4 border-white">
           <h1 className="text-3xl font-black text-gray-800 tracking-tight">
-            우리반 소통 고치 🌿
+            말하지 않아도 통하는 마법, 텔레모션 🌿
           </h1>
           <button 
             onClick={() => window.location.reload()}
