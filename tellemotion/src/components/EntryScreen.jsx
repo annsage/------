@@ -18,6 +18,7 @@ function EntryScreen() {
       setDoc(doc(db, 'Users', name.trim()), {
         name: name.trim(),
         role: role,
+        teamId: 'team_1',
         lastLogin: serverTimestamp()
       }, { merge: true }).catch(error => {
         console.error("사용자 정보 저장 실패:", error);
@@ -61,6 +62,16 @@ function EntryScreen() {
           >
             <span className="text-4xl">🤝</span>
             <span>나는 도우미 친구예요</span>
+          </button>
+        </div>
+
+        <div className="mt-8 pt-6 border-t-2 border-gray-100 w-full flex justify-center">
+          <button
+            onClick={() => useAppStore.getState().setScreen('TEACHER_DASHBOARD')}
+            className="text-gray-500 hover:text-gray-800 font-bold text-lg px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-colors cursor-pointer flex items-center gap-2"
+          >
+            <span>🔑</span>
+            <span>선생님용 대시보드 바로가기</span>
           </button>
         </div>
       </div>

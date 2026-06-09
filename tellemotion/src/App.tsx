@@ -3,6 +3,7 @@ import useAppStore from './store/useAppStore';
 import EntryScreen from './components/EntryScreen';
 import StudentDashboard from './components/StudentDashboard';
 import HelperDashboard from './components/HelperDashboard';
+import MountainDashboard from './components/MountainDashboard';
 
 // 백엔드 연동 가이드 (Python 예시 - f-string 사용 금지)
 // 파이썬 기반 서버 구동 시 예외 처리는 아래와 같이 작성합니다.
@@ -62,6 +63,9 @@ function AppContent() {
       break;
     case 'HELPER_DASHBOARD':
       Content = <HelperDashboard />;
+      break;
+    case 'TEACHER_DASHBOARD':
+      Content = <MountainDashboard />;
       break;
     case 'ENTRY':
     default:
