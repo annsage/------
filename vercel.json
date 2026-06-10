@@ -1,0 +1,9 @@
+{
+  "buildCommand": "cd tellemotion && npm install && npm run build",
+  "outputDirectory": "tellemotion/dist",
+  "framework": "vite",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
