@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component, ReactNode, ErrorInfo } from 'react';
 import useAppStore from './store/useAppStore';
 import EntryScreen from './components/EntryScreen';
 import StudentDashboard from './components/StudentDashboard';
@@ -12,18 +12,26 @@ import MountainDashboard from './components/MountainDashboard';
 // except Exception as e:
 //     print("Firebase 연결 오류 발생: {}".format(e))
 
-class ErrorBoundary extends Component {
-  constructor(props) {
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  errorMessage: string;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, errorMessage: '' };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, errorMessage: error.message };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("앱 실행 중 에러 발생:", error, errorInfo);
     this.setState({ errorMessage: error.message });
   }

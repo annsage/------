@@ -14,6 +14,7 @@ import {
   serverTimestamp 
 } from 'firebase/firestore';
 import Confetti from 'react-confetti';
+import AvatarCreator from './AvatarCreator';
 
 // 오늘 날짜 문자열 YYYY-MM-DD 형식 반환
 const getTodayDateString = () => {
@@ -349,6 +350,7 @@ function HelperDashboard() {
             </div>
           )}
         </div>
+        <AvatarCreator />
       </div>
 
       {/* 우측: 일일 미션 보드 및 긴급 미션 */}
