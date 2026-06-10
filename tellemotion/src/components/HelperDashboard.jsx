@@ -232,7 +232,7 @@ function HelperDashboard() {
       try {
         const docSnap = await getDoc(docRef);
         if (!active) return;
-        if (!docSnap.exists() || !docSnap.data()?.missions) {
+        if (!docSnap.exists() || !docSnap.data()?.missions || !docSnap.data()?.studentMissions) {
           await initializeMissions();
         }
       } catch (error) {
@@ -359,6 +359,32 @@ function HelperDashboard() {
                   <span className="text-gray-400 font-bold text-2xl">그림이 없어요.</span>
                 )}
               </div>
+
+              {/* 학생의 셀프 체크리스트 목표 표시 */}
+              {dailyMissionsDoc && (
+                <div className="bg-yellow-50 p-6 rounded-3xl border-4 border-yellow-200 mt-2">
+                  <h3 className="text-xl font-black text-gray-800 mb-3 flex items-center gap-2">
+                    <span>✅</span> 친구가 실천 중인 목표 (셀프 체크리스트)
+                  </h3>
+                  <div className="flex flex-col gap-2.5">
+                    {dailyMissionsDoc.studentMissions?.map((item) => (
+                      <div key={item.id} className="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border-2 border-gray-100">
+                        <span className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-sm font-black
+                          ${item.completed ? 'bg-yellow-400 text-white' : 'bg-gray-200 text-gray-400'}
+                        `}>
+                          {item.completed ? '✓' : ''}
+                        </span>
+                        <span className={`text-base font-bold ${item.completed ? 'line-through text-gray-400' : 'text-gray-700'}`}>
+                          {item.text}
+                        </span>
+                      </div>
+                    ))}
+                    {(!dailyMissionsDoc.studentMissions || dailyMissionsDoc.studentMissions.length === 0) && (
+                      <p className="text-sm text-gray-400 font-bold text-center">아직 등록된 목표가 없습니다.</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex-1 flex items-center justify-center bg-gray-50 rounded-3xl border-4 border-gray-200 border-dashed">

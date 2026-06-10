@@ -4,13 +4,19 @@ import { db } from '../firebase';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 const PRE_MATCHED_PAIRS = [
-  { teamId: 'team_1', teamName: '1모둠 (기쁨조)', studentName: '철우', helperName: '지우' },
-  { teamId: 'team_2', teamName: '2모둠 (사랑조)', studentName: '지숙', helperName: '서준' },
-  { teamId: 'team_3', teamName: '3모둠 (우정조)', studentName: '세진', helperName: '하은' },
-  { teamId: 'team_4', teamName: '4모둠 (행복조)', studentName: '혜민', helperName: '민재' },
-  { teamId: 'team_5', teamName: '5모둠 (평온조)', studentName: '연수', helperName: '수아' },
-  { teamId: 'team_6', teamName: '6모둠 (미소조)', studentName: '재웅', helperName: '도윤' },
-  { teamId: 'team_7', teamName: '7모둠 (희망조)', studentName: '은지', helperName: '예은' },
+  { teamId: 'team_1', teamName: '1모둠 (기쁨조)', studentName: '상민', helperName: '세진' },
+  { teamId: 'team_2', teamName: '2모둠 (사랑조)', studentName: '지숙', helperName: '철우' },
+  { teamId: 'team_3', teamName: '3모둠 (우정조)', studentName: '재웅', helperName: '시혜' },
+  { teamId: 'team_4', teamName: '4모둠 (행복조)', studentName: '연수', helperName: '은지' },
+  { teamId: 'team_5', teamName: '5모둠 (평온조)', studentName: '지민', helperName: '태일' },
+  { teamId: 'team_6', teamName: '6모둠 (미소조)', studentName: '미나', helperName: '수현' },
+  { teamId: 'team_7', teamName: '7모둠 (희망조)', studentName: '현구', helperName: '성희' },
+  { teamId: 'team_8', teamName: '8모둠 (도전조)', studentName: '수현', helperName: '재혁' },
+  { teamId: 'team_9', teamName: '9모둠 (용기조)', studentName: '상현', helperName: '서희' },
+  { teamId: 'team_10', teamName: '10모둠 (협동조)', studentName: '세빈', helperName: '민경' },
+  { teamId: 'team_11', teamName: '11모둠 (배려조)', studentName: '소연', helperName: '소윤' },
+  { teamId: 'team_12', teamName: '12모둠 (성실조)', studentName: '영진', helperName: '동현' },
+  { teamId: 'team_13', teamName: '13모둠 (열정조)', studentName: '강인', helperName: '제민' },
 ];
 
 function EntryScreen() {

@@ -145,6 +145,11 @@ function StudentDashboard() {
       const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
       let botResponseText = "";
       if (apiKey) {
+        const isUnknownEmotion = selectedEmotion === '잘 모르겠어요';
+        const systemPrompt = isUnknownEmotion
+          ? `당신은 초등학생의 마음을 공감하고 치유해주는 다정한 '텔레모션 전문 아동 심리상담사'입니다. 학생이 자신의 기분을 '잘 모르겠어요'라고 선택했으며, 그림의 지배적인 색채는 '${dominantColor.name}', 아바타 옷 색깔은 '${avatarColor}'입니다. 아이가 스스로의 마음 상태를 차분히 파악하고 구체적으로 표현할 수 있도록, 아주 다정하고 공감 어린 말투로 구체적이고 구조화된 질문(예: 1. 오늘 아침 학교에 올 때 들었던 생각이나 느낌이 어땠나요? 2. 요즘 가장 신경 쓰이거나 고민되는 일이 있나요?)을 건네며 단계별로 탐색할 수 있게 유도해주세요. 귀엽고 따뜻한 이모티콘을 사용하며 다정하게 존댓말로 2-3문장 내외로 답해 주세요.`
+          : `당신은 초등학생을 상담해주는 다정하고 전문적인 '텔레모션 아동 심리상담사'입니다. 학생이 선택한 기분은 '${selectedEmotion}'이며, 그림의 지배적인 색채는 '${dominantColor.name}', 아바타 옷 색깔은 '${avatarColor}'입니다. 이 정보를 기반으로 아이의 감정을 따뜻하게 인정하고 공감해주며, 아이가 스스로 감정을 다스릴 수 있도록(자기조절 학습법 등) 격려하는 아동 심리상담을 수행해주세요. 귀엽고 따뜻한 이모티콘을 사용하며 다정하게 존댓말로 2-3문장 내외로 답해 주세요.`;
+
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
           headers: {
@@ -156,7 +161,7 @@ function StudentDashboard() {
             messages: [
               {
                 role: "system",
-                content: "당신은 초등학생의 마음을 보듬고 공감하며 마음의 상처를 치료해주는 다정하고 전문적인 '아동 심리상담사'입니다. 적극적 경청과 공감 기법을 사용하여 아이가 스스로 감정을 치유하고 정서적 조절을 할 수 있도록 유도해 주세요. 귀엽고 따뜻한 이모티콘을 사용하며 다정하게 존댓말로 2-3문장 내외로 답해 주세요."
+                content: systemPrompt
               },
               ...chatMessages.map(m => ({
                 role: m.sender === 'user' ? 'user' : 'assistant',
@@ -186,7 +191,7 @@ function StudentDashboard() {
 
   // 실시간 셀프체크리스트 Firestore 연동 (미존재 시 자동 초기화하여 목표 노출)
   useEffect(() => {
-    if (!showChatbot || !user.teamId) return;
+    if (!user.teamId) return;
 
     const todayDate = getTodayDateString();
     const docRef = doc(db, 'teams', user.teamId, 'dailyMissions', todayDate);
@@ -197,7 +202,7 @@ function StudentDashboard() {
       try {
         const snap = await getDoc(docRef);
         if (!active) return;
-        if (!snap.exists() || !snap.data()?.missions) {
+        if (!snap.exists() || !snap.data()?.missions || !snap.data()?.studentMissions) {
           const defaultMissions = [
             "아침에 등교한 친구들에게 먼저 밝은 목소리로 '안녕!' 인사하며 웃어주세요.",
             "쉬는 시간에 물건을 떨어뜨렸거나 자리를 찾는 친구에게 다가가 먼저 친절하게 도와주세요.",
@@ -249,7 +254,7 @@ function StudentDashboard() {
         unsubscribe();
       }
     };
-  }, [showChatbot, user.teamId]);
+  }, [user.teamId]);
 
     // 셀프체크리스트 토글 기능
   const handleToggleStudentChecklist = async (idx) => {
@@ -417,8 +422,45 @@ function StudentDashboard() {
       {/* 중앙: 아바타 커스터마이징 및 캔버스 */}
       <div className="flex flex-col lg:flex-row gap-6 flex-1 items-stretch">
         {/* 아바타 영역 */}
-        <div className="w-full lg:w-[420px] shrink-0 flex">
+        <div className="w-full lg:w-[420px] shrink-0 flex flex-col gap-6">
           <AvatarCreator />
+          
+          {/* 오늘의 실천 목표 (셀프 체크리스트) */}
+          {studentMissionsDoc && (
+            <div className="bg-white p-6 rounded-3xl shadow-soft border-4 border-yellow-300">
+              <h3 className="text-xl font-black text-gray-800 mb-3 flex items-center gap-2">
+                <span>✅</span> 오늘의 실천 목표 (셀프 체크리스트)
+              </h3>
+              <div className="flex flex-col gap-2.5">
+                {studentMissionsDoc.studentMissions?.map((item, idx) => (
+                  <div
+                    key={item.id}
+                    onClick={() => handleToggleStudentChecklist(idx)}
+                    className={`flex items-start gap-2.5 p-3 rounded-xl border-2 transition-all cursor-pointer select-none
+                      ${item.completed 
+                        ? 'bg-yellow-50/30 border-yellow-200 opacity-80' 
+                        : 'bg-white border-gray-100 hover:border-yellow-100'
+                      }
+                    `}
+                  >
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors
+                      ${item.completed 
+                        ? 'bg-yellow-400 border-yellow-600 text-white' 
+                        : 'bg-white border-gray-300'
+                      }
+                    `}>
+                      {item.completed && '✓'}
+                    </div>
+                    <p className={`text-sm font-bold text-gray-700 leading-normal break-keep
+                      ${item.completed ? 'line-through text-gray-400' : ''}
+                    `}>
+                      {item.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* 캔버스 영역 */}
