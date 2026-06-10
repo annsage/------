@@ -1,4 +1,5 @@
-import { Component, ReactNode, ErrorInfo } from 'react';
+import { Component } from 'react';
+import type { ReactNode, ErrorInfo } from 'react';
 import useAppStore from './store/useAppStore';
 import EntryScreen from './components/EntryScreen';
 import StudentDashboard from './components/StudentDashboard';
