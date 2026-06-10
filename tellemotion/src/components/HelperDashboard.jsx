@@ -179,6 +179,12 @@ function HelperDashboard() {
   useEffect(() => {
     const docRef = doc(db, 'teams', teamId, 'dailyMissions', todayDate);
 
+    const DEFAULT_STUDENT_MISSIONS = [
+      { id: 1, text: "내 기분과 생각을 그림으로 차분하게 정리하기", completed: false },
+      { id: 2, text: "오늘 하루 공부 계획과 목표를 세우고 실천하기", completed: false },
+      { id: 3, text: "힘들거나 고민이 있을 때 친구 또는 선생님께 말하기", completed: false }
+    ];
+
     const initializeMissions = async () => {
       if (isCreatingMissions) return;
       setIsCreatingMissions(true);
@@ -203,6 +209,9 @@ function HelperDashboard() {
         date: todayDate,
         missions: formattedMissions,
         completedMissions: [],
+        studentMissions: DEFAULT_STUDENT_MISSIONS,
+        studentCompletedCount: 0,
+        helperCompletedCount: 0,
         completedCount: 0,
         updatedAt: new Date()
       };
@@ -216,18 +225,24 @@ function HelperDashboard() {
       }
     };
 
+    let active = true;
+    let unsubscribe = null;
+
     const initAndSubscribe = async () => {
       try {
         const docSnap = await getDoc(docRef);
-        if (!docSnap.exists()) {
+        if (!active) return;
+        if (!docSnap.exists() || !docSnap.data()?.missions) {
           await initializeMissions();
         }
       } catch (error) {
         console.error("미션 문서 존재 여부 체크 에러:", error);
       }
 
+      if (!active) return;
+
       // 실시간 구독 활성화
-      const unsubscribe = onSnapshot(docRef, (snapshot) => {
+      unsubscribe = onSnapshot(docRef, (snapshot) => {
         if (snapshot.exists()) {
           setDailyMissionsDoc(snapshot.data());
         }
@@ -236,17 +251,15 @@ function HelperDashboard() {
         console.error("미션 실시간 연동 에러:", error);
         setLoadingMissions(false);
       });
-
-      return unsubscribe;
     };
 
-    let unsubFn = null;
-    initAndSubscribe().then((unsub) => {
-      unsubFn = unsub;
-    });
+    initAndSubscribe();
 
     return () => {
-      if (unsubFn) unsubFn();
+      active = false;
+      if (unsubscribe) {
+        unsubscribe();
+      }
     };
   }, [teamId, todayDate]);
 
@@ -272,14 +285,17 @@ function HelperDashboard() {
     const completedMissions = updatedMissions
       .filter(m => m.completed)
       .map(m => m.period);
-    const completedCount = completedMissions.length;
+    const helperCompletedCount = completedMissions.length;
+    const studentCompletedCount = dailyMissionsDoc.studentCompletedCount || 0;
+    const totalCompletedCount = helperCompletedCount + studentCompletedCount;
 
     const docRef = doc(db, 'teams', teamId, 'dailyMissions', todayDate);
     try {
       await updateDoc(docRef, {
         missions: updatedMissions,
         completedMissions: completedMissions,
-        completedCount: completedCount,
+        helperCompletedCount: helperCompletedCount,
+        completedCount: totalCompletedCount,
         updatedAt: serverTimestamp()
       });
     } catch (error) {
@@ -299,7 +315,7 @@ function HelperDashboard() {
 
   const needsEmergencyMission = studentStatus && ['불안', '화남'].includes(studentStatus.emotion);
   const completedMissionsCount = dailyMissionsDoc ? dailyMissionsDoc.completedCount : 0;
-  const progressPercentage = Math.round((completedMissionsCount / 6) * 100);
+  const progressPercentage = Math.round((completedMissionsCount / 9) * 100);
 
   return (
     <div className="w-full min-h-screen bg-[var(--color-melon-base)] p-4 md:p-8 flex flex-col lg:flex-row gap-8 font-sans">
@@ -407,7 +423,7 @@ function HelperDashboard() {
           <div className="mb-8 bg-gray-50 p-5 rounded-2xl border-2 border-gray-100">
             <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-bold text-gray-600">오늘의 미션 달성률</span>
-              <span className="text-2xl font-black text-green-600">{progressPercentage}% ({completedMissionsCount}/6)</span>
+              <span className="text-2xl font-black text-green-600">{progressPercentage}% ({completedMissionsCount}/9)</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden border-2 border-gray-300 p-0.5">
               <div 
